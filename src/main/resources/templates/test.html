@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/dialog/js/dialog.js}"></script>
+</head>
+<body style="background-color: #02a6b5">
+<button onclick="test()">test</button>
+</body>
+<script>
+    function test() {
+        let test = new Dialog({
+            url:'/test2'
+            ,title:'哈哈哈哈哈'
+            ,titleColor: '#000'
+            ,titleBgColor: 'rgb(255,170,170)'
+            ,anim:17
+            ,area:['400px','400px']
+            ,params:{
+                province:'山东'
+            }
+            ,btn: ['yes','取消']
+            ,btnBgColor: ['green','red']
+            ,btnBorderColor:['yellow']
+            ,color:'#000'
+            ,bgColor:'#49ffcc'
+            ,toolbar:'#0000ff'
+            ,borderColor:'#ff0000'
+            ,shadowColor: '#000'
+            ,corner:'yellow'
+            ,overlay:'rgba(255,164,88,0.5)'
+            ,opacity:0.85
+            ,maxOpacity:1
+            ,yes: function (a) {
+                console.log(a)
+                closeDialog()
+            }
+        })
+        console.log(test.index)
+    }
+</script>
+</html>
