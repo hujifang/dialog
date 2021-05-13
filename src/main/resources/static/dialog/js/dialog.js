@@ -1,15 +1,26 @@
 
-// 自执行函数引入css文件
+// 自执行函数引入相关文件
 (function () {
     let script_list = document.getElementsByTagName('script');
     let src = script_list[script_list.length - 1].src;
+    let path = src.slice(0, src.indexOf('js'));
+    let head = document.getElementsByTagName('head')[0];
+    // 加载less文件
     let cssTag = document.createElement('link');
-    cssTag.setAttribute('rel', 'stylesheet');
-    cssTag.setAttribute('href', src.slice(0, src.indexOf('js')) + 'css/style.css');
-    document.getElementsByTagName('head')[0].appendChild(cssTag);
+    cssTag.setAttribute('rel', 'stylesheet/less');
+    cssTag.setAttribute('type', 'text/css');
+    cssTag.setAttribute('href', path + 'css/style.less');
+    head.appendChild(cssTag);
+    // 加载less脚本
+    let lessJs = document.createElement('script');
+    lessJs.setAttribute('src', path + 'js/less.min.js');
+    head.appendChild(lessJs);
 }());
 
 (function () {
+    // 命名空间避免命名冲突
+    let namespace = "__techModal";
+
     // 模态框索引
     let dialog_index = 0;
 
@@ -235,48 +246,48 @@
         let maximize = option['maximize'];
         let restore = option['restore'];
 
-        // todo 命名冲突
-        let node = '<div class="md-modal md-effect-' + anim + '" id="modal-' + thisIndex +
+        let node = '<div class="' + namespace + '-md-modal ' + namespace + '-md-effect-' + anim + '" ' +
+            'id="' + namespace + '-modal-' + thisIndex +
             '" style="width: ' + (width != null ? width : '50%') + ';height: ' + (height != null ? height : 'auto') +
             (centerX != null ? ';left: ' + centerX : '') + (centerY != null ? (';top: ' + centerY) : '') + '">' +
 
-            '<div class="md-content" style="background-color: ' + parseColorToRgba(bgColor, opacity) +
+            '<div class="' + namespace + '-md-content" style="background-color: ' + parseColorToRgba(bgColor, opacity) +
             ';box-shadow: 0 0 5px ' + parseColorToRgba(shadowColor) +
             ';border-color: ' + parseColorToRgba(borderColor) + ';color: ' + parseColorToRgba(color) + '">' +
 
-            (title != null ? '<div class="md-title" style="background: ' + parseColorToRgba(titleBgColor) +
+            (title != null ? '<div class="' + namespace + '-md-title" style="background: ' + parseColorToRgba(titleBgColor) +
                 ';color: ' + parseColorToRgba(titleColor) + '">' + title + '</div>' : '') +
 
-            (toolbar !== false ? '<div class="md-button-tools" style="color: ' + parseColorToRgba(toolbar) + '">' +
-                (movable ? '<i class="md-move iconfont icon-move"></i>' : '') +
-                '<i class="md-max-restore iconfont icon-fullscreen-expand"></i>' +
-                '<i class="md-close iconfont icon-close"></i></div>' : '') +
+            (toolbar !== false ? '<div class="' + namespace + '-md-button-tools" style="color: ' + parseColorToRgba(toolbar) + '">' +
+                (movable ? '<i class="' + namespace + '-md-move iconfont icon-move"></i>' : '') +
+                '<i class="' + namespace + '-md-max-restore iconfont icon-fullscreen-expand"></i>' +
+                '<i class="' + namespace + '-md-close iconfont icon-close"></i></div>' : '') +
 
-            '<div class="content">' + (url != null ? ('<iframe id="iframe-' + thisIndex + '" ' +
+            '<div class="' + namespace + '-content">' + (url != null ? ('<iframe id="' + namespace + '-iframe-' + thisIndex + '" ' +
                 'style="visibility: hidden;border: 0;width: 100%;height: 100%" ' +
                 'scrolling="' + (scrollable ? 'auto' : 'no') + '" src="' + url + p + '"></iframe>') : content) + '</div>' +
 
-            (btn !== false ? '<div class="md-button">' +
-                (ok != null ? '<button class="btn-ok" style="color: ' + parseColorToRgba(okColor) +
+            (btn !== false ? '<div class="' + namespace + '-md-button">' +
+                (ok != null ? '<button class="' + namespace + '-btn-ok" style="color: ' + parseColorToRgba(okColor) +
                     ';background: ' + parseColorToRgba(okBgColor) + ';border-color: ' + parseColorToRgba(okBorderColor) +
                     '">' + ok + '</button>' : '') +
-                (cancel != null ? '<button class="btn-cancel" style="color: ' + parseColorToRgba(cancelColor) +
+                (cancel != null ? '<button class="' + namespace + '-btn-cancel" style="color: ' + parseColorToRgba(cancelColor) +
                     ';background: ' + parseColorToRgba(cancelBgColor) + ';border-color: ' + parseColorToRgba(cancelBorderColor) +
                     '">' + cancel + '</button>' : '') + '</div>' : '') +
 
-            (corner !== false ? ('<div class="corner-left-top" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
-                '<div class="corner-right-top" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
-                '<div class="corner-left-bottom" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
-                '<div class="corner-right-bottom" style="border-color: ' + parseColorToRgba(corner) + '"></div>') : '') +
+            (corner !== false ? ('<div class="' + namespace + '-corner-left-top" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
+                '<div class="' + namespace + '-corner-right-top" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
+                '<div class="' + namespace + '-corner-left-bottom" style="border-color: ' + parseColorToRgba(corner) + '"></div>' +
+                '<div class="' + namespace + '-corner-right-bottom" style="border-color: ' + parseColorToRgba(corner) + '"></div>') : '') +
 
-            '</div></div>' + (overlay !== false ? '<div class="md-overlay" id="overlay-' + thisIndex +
+            '</div></div>' + (overlay !== false ? '<div class="' + namespace + '-md-overlay" id="' + namespace + '-overlay-' + thisIndex +
                 '" style="background: ' + parseColorToRgba(overlay) + '"></div>' : '');
 
         document.querySelector('body').insertAdjacentHTML("beforeend", node);
 
-        let modal = document.querySelector('#modal-' + thisIndex),
-            max_restore = modal.querySelector('.md-max-restore'),
-            close = modal.querySelector('.md-close');
+        let modal = document.querySelector('#' + namespace + '-modal-' + thisIndex),
+            max_restore = modal.querySelector('.' + namespace + '-md-max-restore'),
+            close = modal.querySelector('.' + namespace + '-md-close');
 
         // 通过读取一个属性 让页面重新渲染 否则不会触发 css3 的特效
         window.getComputedStyle(modal).width;
@@ -285,7 +296,7 @@
         modal.style.zIndex = String(1000 + thisIndex * 2);
 
         if (overlay !== false) {
-            let overlay_dom = document.querySelector('#overlay-' + thisIndex);
+            let overlay_dom = document.querySelector('#' + namespace + '-overlay-' + thisIndex);
             // 设置遮罩层的层叠值
             overlay_dom.style.zIndex = String(1000 + thisIndex * 2 - 1);
             overlay_dom.removeEventListener('click', function () {
@@ -297,7 +308,7 @@
         }
 
         if(url != null) {
-            let iframe = document.getElementById("iframe-" + thisIndex);
+            let iframe = document.getElementById(namespace + '-iframe-' + thisIndex);
             iframe.onload = function () {
                 iframe.style.visibility = "";
             };
@@ -305,7 +316,7 @@
 
         // 拖动
         if (toolbar && movable) {
-            modal.querySelector('.md-move').addEventListener("mousedown", move);
+            modal.querySelector('.' + namespace + '-md-move').addEventListener("mousedown", move);
         }
 
         if (toolbar) {
@@ -321,22 +332,22 @@
 
         if (ok != null) {
             if (typeof yes === 'function') {
-                modal.querySelector('.btn-ok').addEventListener('click', function () {
+                modal.querySelector('.' + namespace + '-btn-ok').addEventListener('click', function () {
                     yes(thisIndex);
                 });
             } else {
-                modal.querySelector('.btn-ok').addEventListener('click', function () {
+                modal.querySelector('.' + namespace + '-btn-ok').addEventListener('click', function () {
                     closeDialog(thisIndex);
                 });
             }
         }
         if (cancel != null) {
             if (typeof no === 'function') {
-                modal.querySelector('.btn-cancel').addEventListener('click', function () {
+                modal.querySelector('.' + namespace + '-btn-cancel').addEventListener('click', function () {
                     no(thisIndex);
                 });
             } else {
-                modal.querySelector('.btn-cancel').addEventListener('click', function () {
+                modal.querySelector('.' + namespace + '-btn-cancel').addEventListener('click', function () {
                     closeDialog(thisIndex);
                 });
             }
@@ -346,7 +357,7 @@
             beforeShow(thisIndex);
         }
 
-        modal.classList.add('md-show');
+        modal.classList.add(namespace + '-md-show');
 
         if (typeof afterShow === 'function') {
             afterShow(thisIndex);
@@ -355,7 +366,7 @@
         // 最大化
         function max(evt) {
             evt.stopPropagation();
-            let content = modal.querySelector('.md-content');
+            let content = modal.querySelector('.' + namespace + '-md-content');
 
             // 记录最大化前的尺寸、位置
             preWidth = modal.offsetWidth;
@@ -369,7 +380,7 @@
 
             if (movable) {
                 // 不可拖动
-                let moveBtn = content.querySelector('.md-move');
+                let moveBtn = content.querySelector('.' + namespace + '-md-move');
                 moveBtn.removeEventListener("mousedown", move);
                 moveBtn.parentNode.removeChild(moveBtn);
             }
@@ -377,7 +388,7 @@
             this.blur();
             this.classList.remove('icon-fullscreen-expand');
             this.classList.add('icon-fullscreen-shrink');
-            let max_restore = modal.querySelector('.md-max-restore');
+            let max_restore = modal.querySelector('.' + namespace + '-md-max-restore');
             max_restore.removeEventListener('click', max);
             max_restore.addEventListener('click', ret);
 
@@ -391,7 +402,7 @@
         // 还原
         function ret(evt) {
             evt.stopPropagation();
-            let content = modal.querySelector('.md-content');
+            let content = modal.querySelector('.' + namespace + '-md-content');
 
             shrink();
 
@@ -399,15 +410,15 @@
 
             if (movable) {
                 // 恢复可拖动状态
-                modal.querySelector('.md-button-tools')
-                    .insertAdjacentHTML('afterbegin', '<i class="md-move iconfont icon-move"></i>');
-                modal.querySelector('.md-move').addEventListener('mousedown', move);
+                modal.querySelector('.' + namespace + '-md-button-tools')
+                    .insertAdjacentHTML('afterbegin', '<i class="' + namespace + '-md-move iconfont icon-move"></i>');
+                modal.querySelector('.' + namespace + '-md-move').addEventListener('mousedown', move);
             }
 
             this.blur();
             this.classList.remove('icon-fullscreen-shrink');
             this.classList.add('icon-fullscreen-expand');
-            let max_restore = modal.querySelector('.md-max-restore');
+            let max_restore = modal.querySelector('.' + namespace + '-md-max-restore');
             max_restore.removeEventListener('click', ret);
             max_restore.addEventListener('click', max);
 
@@ -423,8 +434,8 @@
             evt.stopPropagation();
             // 判断鼠标左键
             if (evt.button === 0) {
-                let modal = this.closest('.md-modal');
-                let content = modal.querySelector('.content');
+                let modal = this.closest('.' + namespace + '-md-modal');
+                let content = modal.querySelector('.' + namespace + '-content');
                 let oEvent = evt || event;
                 let distanceX = oEvent.clientX - modal.offsetLeft;
                 let distanceY = oEvent.clientY - modal.offsetTop;
@@ -531,16 +542,16 @@
             index = dialog_list[dialog_list_rear];
         }
         if (index != null) {
-            let modal = document.querySelector('#modal-' + index);
+            let modal = document.querySelector('#' + namespace + '-modal-' + index);
             if (modal != null) {
-                modal.classList.remove('md-show');
+                modal.classList.remove(namespace + '-md-show');
                 let dIndex = dialog_list.indexOf(index);
                 if (dIndex > -1) {
                     dialog_list.splice(dIndex, 1);
                     --dialog_list_rear;
                 }
                 setTimeout(function () {
-                    let overlay_dom = document.querySelector('#overlay-' + index);
+                    let overlay_dom = document.querySelector('#' + namespace + '-overlay-' + index);
                     if (overlay_dom != null) {
                         overlay_dom.parentNode.removeChild(overlay_dom);
                     }
