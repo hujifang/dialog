@@ -5,16 +5,22 @@
     let src = script_list[script_list.length - 1].src;
     let path = src.slice(0, src.indexOf('js'));
     let head = document.getElementsByTagName('head')[0];
-    // 加载less文件
+
+    // // 加载less文件
+    // let cssTag = document.createElement('link');
+    // cssTag.setAttribute('rel', 'stylesheet/less');
+    // cssTag.setAttribute('type', 'text/css');
+    // cssTag.setAttribute('href', path + 'css/style.less');
+    // head.appendChild(cssTag);
+    // // 加载less脚本
+    // let lessJs = document.createElement('script');
+    // lessJs.setAttribute('src', path + 'js/less.min.js');
+    // head.appendChild(lessJs);
+
     let cssTag = document.createElement('link');
-    cssTag.setAttribute('rel', 'stylesheet/less');
-    cssTag.setAttribute('type', 'text/css');
-    cssTag.setAttribute('href', path + 'css/style.less');
-    head.appendChild(cssTag);
-    // 加载less脚本
-    let lessJs = document.createElement('script');
-    lessJs.setAttribute('src', path + 'js/less.min.js');
-    head.appendChild(lessJs);
+    cssTag.setAttribute('rel','stylesheet');
+    cssTag.setAttribute('href',path + 'css/style.css');
+    head.appendChild(cssTag)
 }());
 
 (function () {
@@ -51,7 +57,7 @@
      * corner：边角，true、false、颜色<br/>
      * overlay：遮罩层，true、false、颜色<br/>
      * btn、ok、cancel：底部按钮<br/>
-     * btnBorderColor、okBorderColor、cancelBorderColor：底部按钮边框颜色</br>
+     * btnBorderColor、okBorderColor、cancelBorderColor：底部按钮边框颜色<br/>
      * btnBgColor、okBgColor、cancelBgColor：底部按钮背景颜色<br/>
      * btnColor、okColor、cancelColor：底部按钮字体颜色<br/>
      * beforeShow：弹出之前的回调函数<br/>
